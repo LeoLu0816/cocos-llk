@@ -71,14 +71,14 @@ export class btnManager extends Component {
     const t = total / this.MAX_TYPE;
 
     // 塞入牌組
-    const typeArr = [...Array(this.MAX_TYPE).keys()];
-    for (let i = 0; i < t; i++) {
-      this.types.push(...typeArr)
-    }
-    this.types.sort(() => 0.5 - Math.random());
-    // console.log(this.types);
+    // const typeArr = [...Array(this.MAX_TYPE).keys()]; // 不知為啥build之後就會掛
+    const typeArr = [];
+    for (let i = 0; i < this.MAX_TYPE; i++) { typeArr.push(i); }
+    const types = [];
+    for (let i = 0; i < t; i++) { types.push(...typeArr) }
+    types.sort(() => 0.5 - Math.random());
 
-    this.typeMap = Array(this.MAX_TYPE).fill(null);
+    this.typeMap = Array(total).fill(null);
     for (let i = 0; i < this.typeMap.length; i++) {
       this.typeMap[i] = [];
     }
@@ -123,7 +123,6 @@ export class btnManager extends Component {
             if (b1C.type === b2C.type && b1C.uuid !== b2C.uuid) {
               const state = this.llk.check();
               if (state.isOK) {
-                // console.log(`連線成功`);
                 this.llk.setPoint({ x: b1C.x, y: b1C.y }, FLAG.EMPTY);
                 this.llk.setPoint({ x: b2C.x, y: b2C.y }, FLAG.EMPTY);
 
@@ -159,7 +158,7 @@ export class btnManager extends Component {
         node.setParent(this.node);
         node.setPosition(x * 50, y * 50, 0);
 
-        const thisType = this.types.pop();
+        const thisType = types.pop();
         this.setBtnText(node, `${thisType}`);
         this.map[x][y].x = x;
         this.map[x][y].y = y;
@@ -200,7 +199,8 @@ export class btnManager extends Component {
     const total = this.MAX_X * this.MAX_Y;
     const t = total / this.MAX_TYPE;
 
-    const typeArr = [...Array(this.MAX_TYPE).keys()];
+    const typeArr = [];
+    for (let i = 0; i < this.MAX_TYPE; i++) { typeArr.push(i); }
     const types = [];
     for (let i = 0; i < t; i++) { types.push(...typeArr) }
     types.sort(() => 0.5 - Math.random());
@@ -259,7 +259,7 @@ export class btnManager extends Component {
   }
 
   saveTypeMap() {
-    this.typeMap.forEach(function (x, i, arr) { arr[i] = []; })
+    this.typeMap.forEach(function (x, i, arr) { arr[i] = []; });
     for (let x = 1; x <= this.MAX_X; x++) {
       for (let y = 1; y <= this.MAX_Y; y++) {
         const { node, type } = this.map[x][y];

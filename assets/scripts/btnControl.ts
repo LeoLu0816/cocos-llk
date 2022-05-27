@@ -26,7 +26,10 @@ export class btnControl extends Component {
 
   private _isSelect: boolean;
   get isSelect() { return this._isSelect; }
-  set isSelect(isSelect) { this._isSelect = isSelect; }
+  set isSelect(isSelect) {
+    this._isSelect = isSelect;
+    this.resetColor();
+  }
 
   private _tipsTimer = 0
 
